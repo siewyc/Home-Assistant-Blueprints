@@ -32,20 +32,19 @@ mode: single
 max_exceeded: silent
 
 trigger:
-  - platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: !input 'switch_id'
-
-variable: clicktype
-  value_template: '{{ trigger.event.data }}'
+- platform: event
+  event_type: xiaomi_aqara.click
+  event_data:
+    entity_id: !input 'switch_id'
 
 action:
-  - choose:
-    - conditions: '{{ clicktype == ''single'' }}'
-      sequence: !input 'single_click_action'
-    - conditions: '{{ clicktype == ''double'' }}'
-      sequence: !input 'double_click_action'
-    - conditions: '{{ clicktype == ''hold'' }}'
-      sequence: !input 'long_click_action'
+- variables:
+  clicktype: '{{ trigger.event.data.click_type }}'
+- choose:
+  - conditions: '{{ clicktype == ''single'' }}'
+    sequence: !input 'single_click_action'
+  - conditions: '{{ clicktype == ''double'' }}'
+    sequence: !input 'double_click_action'
+  - conditions: '{{ clicktype == ''hold'' }}'
+    sequence: !input 'long_click_action'
 
