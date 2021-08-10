@@ -37,9 +37,10 @@ trigger:
     event_data:
       entity_id: !input 'switch_id'
 
+variable: clicktype
+  value_template: '{{ trigger.event.data }}'
+
 action:
-  - variable: clicktype
-    value_template: '{{ trigger.event.data }}'
   - choose:
     - conditions: '{{ clicktype == ''single'' }}'
       sequence: !input 'single_click_action'
