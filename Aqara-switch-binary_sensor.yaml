@@ -27,23 +27,23 @@ blueprint:
       default: []
       selector:
         action: {}
+
 mode: single
 max_exceeded: silent
+
 trigger:
   - platform: event
     event_type: xiaomi_aqara.click
     event_data:
       entity_id: !input 'switch_id'
+
 action:
-  - variable:
-    click_type: '{{ trigger.event.data.click_type }}'
+  - variables:
+    clicktype: '{{ trigger.event.data.click_type }}'
   - choose:
-    - conditions:
-      - '{{ click_type == ''hold'' }}'
-      sequence: !input 'long_click_action'
-    - conditions:
-      - '{{ click_type == ''single'' }}'
+    - conditions: '{{ clicktype == ''single'' }}'
       sequence: !input 'single_click_action'
-    - conditions:
-      - '{{ click_type == ''double'' }}'
+    - conditions: '{{ clicktype == ''double'' }}'
       sequence: !input 'double_click_action'
+    - conditions: '{{ clicktype == ''hold'' }}'
+      sequence: !input 'long_click_action'
