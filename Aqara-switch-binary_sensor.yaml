@@ -39,7 +39,7 @@ trigger:
 
 action:
   - variables:
-    clicktype: '{{ trigger.event.data.click_type }}'
+    clicktype: '{{ trigger.event.data }}'
   - choose:
     - conditions: '{{ clicktype == ''single'' }}'
       sequence: !input 'single_click_action'
