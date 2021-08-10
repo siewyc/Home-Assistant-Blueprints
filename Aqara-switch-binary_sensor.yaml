@@ -47,3 +47,4 @@ action:
       sequence: !input 'double_click_action'
     - conditions: '{{ clicktype == ''hold'' }}'
       sequence: !input 'long_click_action'
+
