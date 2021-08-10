@@ -35,14 +35,15 @@ trigger:
     event_data:
       entity_id: !input 'switch_id'
 action:
-  - variables:
+  - variable:
     click_type: '{{ trigger.event.data.click_type }}'
   - choose:
-    - conditions: '{{ click_type == ''hold'' }}'
+    - conditions:
+      - '{{ click_type == ''hold'' }}'
       sequence: !input 'long_click_action'
-  - choose:
-    - conditions: '{{ click_type == ''single'' }}'
+    - conditions:
+      - '{{ click_type == ''single'' }}'
       sequence: !input 'single_click_action'
-  - choose:
-    - conditions: '{{ click_type == ''double'' }}'
+    - conditions:
+      - '{{ click_type == ''double'' }}'
       sequence: !input 'double_click_action'
