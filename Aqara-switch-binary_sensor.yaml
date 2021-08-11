@@ -10,20 +10,26 @@ blueprint:
         entity:
           domain: binary_sensor
     single_click_action:
-      name: Single click action
+      name: Single Click action
       description: The action(s) to launch for a single short click
       default: []
       selector:
         action: {}
     double_click_action:
-      name: Double click action
+      name: Double Click action
       description: The action(s) to launch for a double click
       default: []
       selector:
         action: {}
+    long_press_action:
+      name: Long Press action
+      description: The action(s) to launch for a long press
+      default: []
+      selector:
+        action: {}
     long_click_action:
-      name: Long click action
-      description: The action(s) to launch for a long click
+      name: Long Click action
+      description: The action(s) to launch for a long click (on release)
       default: []
       selector:
         action: {}
@@ -43,6 +49,8 @@ action:
     sequence: !input 'single_click_action'
   - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
     sequence: !input 'double_click_action'
+  - conditions: '{{ trigger.event.data.click_type == ''long_click_press'' }}'
+    sequence: !input 'long_press_action'
   - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
     sequence: !input 'long_click_action'
 
