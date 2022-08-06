@@ -39,36 +39,13 @@ blueprint:
       default: []
       selector:
         action: {}
-    swing:
-      name: Swing
-      description: Actions to run when cube is swung (hold in your hands and swing)
-      default: []
-      selector:
-        action: {} 
-    alert:
-      name: Wake
-      description: Actions to run when cube wakes up (idle and you tap it)
-      default: []
-      selector:
-        action: {}
     free_fall:
       name: Drop
       description: Actions to run when cube is dropped (throw in the air and catch)
       default: []
       selector:
         action: {}
-    rotate_right:
-      name: Rotate Right
-      description: Actions to run when cube is rotated right (turned clockwise)
-      default: []
-      selector:
-        action: {}
-    rotate_left:
-      name: Rotate Left
-      description: Actions to run when cube is rotated left (turned counter clockwise)
-      default: []
-      selector:
-        action: {}
+
 
 mode: single
 max_exceeded: silent
@@ -91,21 +68,5 @@ action:
     sequence: !input 'tap_twice'
   - conditions: '{{ trigger.event.data.action_type == ''shake_air'' }}'
     sequence: !input 'shake_air'
-  - conditions: '{{ trigger.event.data.action_type == ''swing'' }}'
-    sequence: !input 'swing'
-  - conditions: '{{ trigger.event.data.action_type == ''alert'' }}'
-    sequence: !input 'alert'
   - conditions: '{{ trigger.event.data.action_type == ''free_fall'' }}'
     sequence: !input 'free_fall'
-  - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
-          - condition: numeric_state
-            entity_id: !input switch_id
-            attribute: angle
-            above: '0'
-    sequence: !input "rotate_right"
-  - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
-          - condition: numeric_state
-            entity_id: !input switch_id
-            attribute: angle
-            below: '0'
-    sequence: !input "rotate_left"
