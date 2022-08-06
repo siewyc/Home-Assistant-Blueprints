@@ -67,7 +67,7 @@ variables:
   action: '{{ trigger.to_state.state }}'
 trigger:
   - platform: state
-    entity_id: !input trigger_entity
+    entity_id: !input switch_id
 condition: []
 action:
   - choose:
@@ -95,14 +95,14 @@ action:
       - conditions:
           - "{{ action == 'rotate' }}"
           - condition: numeric_state
-            entity_id: !input trigger_entity
+            entity_id: !input switch_id
             attribute: angle
             above: '0'
         sequence: !input "rotate_right"
       - conditions:
           - "{{ action == 'rotate' }}"
           - condition: numeric_state
-            entity_id: !input trigger_entity
+            entity_id: !input switch_id
             attribute: angle
             below: '0'
         sequence: !input "rotate_left"
