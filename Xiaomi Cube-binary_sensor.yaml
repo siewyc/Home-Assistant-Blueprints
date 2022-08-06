@@ -1,0 +1,87 @@
+blueprint:
+  name: Aqara switch binary_sensor
+  description: Bind action to Aqara switch
+  domain: automation
+  input:
+    switch_id:
+      name: Binary sensor entity
+      description: The binary_sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+    flip90:
+      name: Flip 90º
+      description: Actions to run when cube is flipped 90 degrees (flipped to any side)
+      default: []
+      selector:
+        action: {}
+    flip180:
+      name: Flip 180º
+      description: Actions to run when cube is flipped 180 degrees (flipped to the previous bottom side)
+      default: []
+      selector:
+        action: {}
+    move:
+      name: move
+      description: Actions to run when cube is moved (slide in any direction)
+      default: []
+      selector:
+        action: {}
+    tap_twice:
+      name: Double Tap
+      description: Actions to run when cube is tapped twice (hold it with your hands and tap it twice the table)
+      default: []
+      selector:
+        action: {}
+    shake_air:
+      name: Shake
+      description: Actions to run when cube is shaked (hold in your hands and shake)
+      default: []
+      selector:
+        action: {}
+    swing:
+      name: Swing
+      description: Actions to run when cube is swung (hold in your hands and swing)
+      default: []
+      selector:
+        action: {} 
+    alert:
+      name: Wake
+      description: Actions to run when cube wakes up (idle and you tap it)
+      default: []
+      selector:
+        action: {}
+    free_fall:
+      name: Drop
+      description: Actions to run when cube is dropped (throw in the air and catch)
+      default: []
+      selector:
+        action: {}
+
+mode: single
+max_exceeded: silent
+
+trigger:
+- platform: event
+  event_type: xiaomi_aqara.cube_action
+  event_data:
+    entity_id: !input 'switch_id'
+
+action:
+- choose:
+  - conditions: '{{ trigger.event.data.action_type == ''flip90'' }}'
+    sequence: !input 'flip90'
+  - conditions: '{{ trigger.event.data.action_type == ''flip180'' }}'
+    sequence: !input 'flip180'
+  - conditions: '{{ trigger.event.data.action_type == ''move'' }}'
+    sequence: !input 'move'
+  - conditions: '{{ trigger.event.data.action_type == ''tap_twice'' }}'
+    sequence: !input 'tap_twice'
+  - conditions: '{{ trigger.event.data.action_type == ''shake_air'' }}'
+    sequence: !input 'shake_air'
+  - conditions: '{{ trigger.event.data.action_type == ''swing'' }}'
+    sequence: !input 'swing'
+  - conditions: '{{ trigger.event.data.action_type == ''alert'' }}'
+    sequence: !input 'alert'
+  - conditions: '{{ trigger.event.data.action_type == ''free_fall'' }}'
+    sequence: !input 'free_fall'
