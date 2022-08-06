@@ -1,6 +1,6 @@
 blueprint:
-  name: Aqara switch binary_sensor
-  description: Bind action to Aqara switch
+  name: Xiaomi Cube binary_sensor
+  description: Bind action to Xiaomi Cube
   domain: automation
   input:
     switch_id:
