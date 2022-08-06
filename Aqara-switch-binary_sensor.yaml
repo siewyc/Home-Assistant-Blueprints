@@ -9,48 +9,103 @@ blueprint:
       selector:
         entity:
           domain: binary_sensor
-    single_click_action:
-      name: Single Click action
-      description: The action(s) to launch for a single short click
+    alert:
+      name: Wake
+      description: Actions to run when cube wakes up (idle and you tap it)
       default: []
       selector:
         action: {}
-    double_click_action:
-      name: Double Click action
-      description: The action(s) to launch for a double click
+    tap_twice:
+      name: Double Tap
+      description: Actions to run when cube is tapped twice (hold it with your hands and tap it twice the table)
       default: []
       selector:
         action: {}
-    long_press_action:
-      name: Long Press action
-      description: The action(s) to launch for a long press
+    move:
+      name: Move
+      description: Actions to run when cube is moved (slide in any direction)
       default: []
       selector:
         action: {}
-    long_click_action:
-      name: Long Click action
-      description: The action(s) to launch for a long click (on release)
+    free_fall:
+      name: Drop
+      description: Actions to run when cube is dropped (throw in the air and catch)
       default: []
       selector:
         action: {}
-
-mode: single
-max_exceeded: silent
-
+    shake_air:
+      name: Shake
+      description: Actions to run when cube is shaked (hold in your hands and shake)
+      default: []
+      selector:
+        action: {}
+    flip90:
+      name: Flip 90º
+      description: Actions to run when cube is flipped 90 degrees (flipped to any side)
+      default: []
+      selector:
+        action: {}
+    flip180:
+      name: Flip 180º
+      description: Actions to run when cube is flipped 180 degrees (flipped to the previous bottom side)
+      default: []
+      selector:
+        action: {}
+    rotate_right:
+      name: Rotate Right
+      description: Actions to run when cube is rotated right (turned clockwise)
+      default: []
+      selector:
+        action: {}
+    rotate_left:
+      name: Rotate Left
+      description: Actions to run when cube is rotated left (turned counter clockwise)
+      default: []
+      selector:
+        action: {}
+variables:
+  action: '{{ trigger.to_state.state }}'
 trigger:
-- platform: event
-  event_type: xiaomi_aqara.click
-  event_data:
-    entity_id: !input 'switch_id'
-
+  - platform: state
+    entity_id: !input trigger_entity
+condition: []
 action:
-- choose:
-  - conditions: '{{ trigger.event.data.click_type == ''single'' }}'
-    sequence: !input 'single_click_action'
-  - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
-    sequence: !input 'double_click_action'
-  - conditions: '{{ trigger.event.data.click_type == ''long_click_press'' }}'
-    sequence: !input 'long_press_action'
-  - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
-    sequence: !input 'long_click_action'
-
+  - choose:
+      - conditions:
+          - "{{ action == 'wakeup' }}"
+        sequence: !input "alert"
+      - conditions:
+          - "{{ action == 'tap' }}"
+        sequence: !input "tap_twice"
+      - conditions:
+          - "{{ action == 'slide' }}"
+        sequence: !input "move"
+      - conditions:
+          - "{{ action == 'fall' }}"
+        sequence: !input "free_fall"
+      - conditions:
+          - "{{ action == 'shake' }}"
+        sequence: !input "shake_air"
+      - conditions:
+          - "{{ action == 'flip90' }}"
+        sequence: !input "flip90"
+      - conditions:
+          - "{{ action == 'flip180' }}"
+        sequence: !input "flip180"
+      - conditions:
+          - "{{ action == 'rotate' }}"
+          - condition: numeric_state
+            entity_id: !input trigger_entity
+            attribute: angle
+            above: '0'
+        sequence: !input "rotate_right"
+      - conditions:
+          - "{{ action == 'rotate' }}"
+          - condition: numeric_state
+            entity_id: !input trigger_entity
+            attribute: angle
+            below: '0'
+        sequence: !input "rotate_left"
+    default: []
+mode: queued
+max_exceeded: silent
