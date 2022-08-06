@@ -39,7 +39,7 @@ max_exceeded: silent
 
 trigger:
 - platform: event
-  event_type: xiaomi_aqara.click
+  event_type: xiaomi_aqara
   event_data:
     entity_id: !input 'switch_id'
 
