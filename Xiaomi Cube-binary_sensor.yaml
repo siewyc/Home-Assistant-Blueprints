@@ -97,15 +97,15 @@ action:
     sequence: !input 'alert'
   - conditions: '{{ trigger.event.data.action_type == ''free_fall'' }}'
     sequence: !input 'free_fall'
-   - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
+  - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
           - condition: numeric_state
             entity_id: !input switch_id
             attribute: angle
             above: '0'
-        sequence: !input "rotate_right"
-      - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
+    sequence: !input "rotate_right"
+  - conditions: '{{ trigger.event.data.action_type == ''rotate'' }}'
           - condition: numeric_state
             entity_id: !input switch_id
             attribute: angle
             below: '0'
-        sequence: !input "rotate_left"
+    sequence: !input "rotate_left"
