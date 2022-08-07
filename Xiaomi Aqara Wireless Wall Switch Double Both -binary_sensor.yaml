@@ -1,6 +1,6 @@
 blueprint:
   name: Xiaomi Aqara Wireless Wall Switch Both
-  description: Bind action to Aqara Wireless Wall Switch Single
+  description: Bind action to Aqara Wireless Wall Switch Double
   domain: automation
   input:
     switch_id:
