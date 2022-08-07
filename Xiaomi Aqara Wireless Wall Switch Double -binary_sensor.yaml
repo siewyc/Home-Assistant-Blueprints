@@ -4,13 +4,23 @@ blueprint:
   domain: automation
   input:
     switch_id:
-      name: Binary sensor entity
-      description: The binary_sensor used to trigger the automation
+      name: Left Switch
+      description: The left binary_sensor used to trigger the automation
       selector:
         entity:
           domain: binary_sensor
-    flip90:
-      name: Flip 90º
+      name: Right Switch
+      description: The right binary_sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+       name: Both Switches
+      description: The left and right binary_sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+    single_left:
+      name: Left Single Click
       description: Actions to run when cube is flipped 90 degrees (flipped to any side)
       default: []
       selector:
@@ -52,21 +62,21 @@ max_exceeded: silent
 
 trigger:
 - platform: event
-  event_type: xiaomi_aqara.cube_action
+  event_type: xiaomi_aqara.click
   event_data:
     entity_id: !input 'switch_id'
 
 action:
 - choose:
-  - conditions: '{{ trigger.event.data.action_type == ''flip90'' }}'
-    sequence: !input 'flip90'
-  - conditions: '{{ trigger.event.data.action_type == ''flip180'' }}'
-    sequence: !input 'flip180'
-  - conditions: '{{ trigger.event.data.action_type == ''move'' }}'
-    sequence: !input 'move'
-  - conditions: '{{ trigger.event.data.action_type == ''tap_twice'' }}'
-    sequence: !input 'tap_twice'
-  - conditions: '{{ trigger.event.data.action_type == ''shake_air'' }}'
-    sequence: !input 'shake_air'
-  - conditions: '{{ trigger.event.data.action_type == ''free_fall'' }}'
-    sequence: !input 'free_fall'
+  - conditions: '{{ trigger.event.data.click_type == ''single'' }}'
+    sequence: !input 'single'
+  - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
+    sequence: !input 'double'
+  - conditions: '{{ trigger.event.data.click_type == ''long'' }}'
+    sequence: !input 'long'
+  - conditions: '{{ trigger.event.data.click_type == ''both'' }}'
+    sequence: !input 'both'
+  - conditions: '{{ trigger.event.data.click_type == ''double_both'' }}'
+    sequence: !input 'double_both'
+  - conditions: '{{ trigger.event.data.click_type == ''long_both'' }}'
+    sequence: !input 'long_both'
