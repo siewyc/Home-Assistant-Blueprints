@@ -1,0 +1,55 @@
+blueprint:
+  name: Aqara switch binary_sensor
+  description: Bind action to Aqara switch
+  domain: automation
+  input:
+    switch_id:
+      name: Binary sensor entity
+      description: The binary_sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+    single_click_action:
+      name: Single Click action
+      description: The action(s) to launch for a single short click
+      default: []
+      selector:
+        action: {}
+    double_click_action:
+      name: Double Click action
+      description: The action(s) to launch for a double click
+      default: []
+      selector:
+        action: {}
+    long_press_action:
+      name: Long Press action
+      description: The action(s) to launch for a long press
+      default: []
+      selector:
+        action: {}
+    long_click_action:
+      name: Long Click action
+      description: The action(s) to launch for a long click (on release)
+      default: []
+      selector:
+        action: {}
+
+mode: single
+max_exceeded: silent
+
+trigger:
+- platform: event
+  event_type: xiaomi_aqara.click
+  event_data:
+    entity_id: !input 'switch_id'
+
+action:
+- choose:
+  - conditions: '{{ trigger.event.data.click_type == ''single'' }}'
+    sequence: !input 'single_click_action'
+  - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
+    sequence: !input 'double_click_action'
+  - conditions: '{{ trigger.event.data.click_type == ''long_click_press'' }}'
+    sequence: !input 'long_press_action'
+  - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
+    sequence: !input 'long_click_action'
