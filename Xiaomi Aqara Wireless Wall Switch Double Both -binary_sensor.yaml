@@ -1,0 +1,31 @@
+blueprint:
+  name: Xiaomi Aqara Wireless Wall Switch Single
+  description: Bind action to Aqara Wireless Wall Switch Single
+  domain: automation
+  input:
+    switch_id:
+      name: Switch
+      description: The left and right (both) binary_sensor used to trigger the automation
+      selector:
+        entity:
+          domain: binary_sensor
+    both:
+      name: Actions to run when switch is pressed
+      description: Actions to run 
+      default: []
+      selector:
+        action: {}
+
+mode: single
+max_exceeded: silent
+
+trigger:
+- platform: event
+  event_type: xiaomi_aqara.click
+  event_data:
+    entity_id: !input 'switch_id'
+
+action:
+- choose:
+  - conditions: '{{ trigger.event.data.click_type == ''both'' }}'
+    sequence: !input 'both'
