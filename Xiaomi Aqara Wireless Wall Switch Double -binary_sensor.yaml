@@ -3,17 +3,19 @@ blueprint:
   description: Bind action to Aqara Wireless Wall Switch Double
   domain: automation
   input:
-    switch_id:
+    left_switch_id:
       name: Left Switch
       description: The left binary_sensor used to trigger the automation
       selector:
         entity:
           domain: binary_sensor
+    right_switch_id:
       name: Right Switch
       description: The right binary_sensor used to trigger the automation
       selector:
         entity:
           domain: binary_sensor
+    both_switch_id:
        name: Both Switches
       description: The left and right binary_sensor used to trigger the automation
       selector:
@@ -64,7 +66,15 @@ trigger:
 - platform: event
   event_type: xiaomi_aqara.click
   event_data:
-    entity_id: !input 'switch_id'
+    entity_id: !input 'left_switch_id'
+- platform: event
+  event_type: xiaomi_aqara.click
+  event_data:
+    entity_id: !input 'right_switch_id'
+- platform: event
+  event_type: xiaomi_aqara.click
+  event_data:
+    entity_id: !input 'both_switch_id'
 
 action:
 - choose:
